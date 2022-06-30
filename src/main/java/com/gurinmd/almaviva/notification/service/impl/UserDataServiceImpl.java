@@ -7,6 +7,7 @@ import com.gurinmd.almaviva.notification.entity.UserData;
 import com.gurinmd.almaviva.notification.repository.UserDataRepository;
 import com.gurinmd.almaviva.notification.service.UserDataService;
 import com.gurinmd.almaviva.notification.util.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor()
 public class UserDataServiceImpl implements UserDataService {
     
     @Autowired

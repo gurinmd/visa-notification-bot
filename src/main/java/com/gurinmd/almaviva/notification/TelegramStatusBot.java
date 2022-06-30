@@ -33,17 +33,10 @@ public class TelegramStatusBot extends TelegramLongPollingCommandBot {
     private String token;
     
     @Autowired
-    private StartCommand startCommand;
-    
-    @Autowired
-    private StopCommand stopCommand;
-    
-    @Autowired
-    private StatsCommand statsCommand;
+    List<IBotCommand> commands;
     
     @PostConstruct
     public void initCommands() throws Exception{
-        List<IBotCommand> commands = initCommandList();
         registerAll(commands.toArray(new IBotCommand[commands.size()]));
         setMyCommands(commands);
     }
@@ -65,7 +58,7 @@ public class TelegramStatusBot extends TelegramLongPollingCommandBot {
     
     public void notifyAboutChanges(UserData userData, 
                                    CheckStatusResult checkStatusResult) throws TelegramApiException {
-        String text = String.format(NOTIFICATION_TEXT_TEMPLATE, checkStatusResult.getPassport(), 
+        String text = String.format(NOTIFICATION_TEXT_TEMPLATE, checkStatusResult.getPassport(),
             checkStatusResult.getFolder(), checkStatusResult.getStatusDescription());
         SendMessage sendMessage = SendMessage.builder()
             .chatId(userData.getChatId().toString())
@@ -73,15 +66,6 @@ public class TelegramStatusBot extends TelegramLongPollingCommandBot {
             .parseMode(ParseMode.MARKDOWNV2)
             .build();
         sendApiMethod(sendMessage);
-    }
-    
-    private List<IBotCommand> initCommandList() {
-        List<IBotCommand> commands = new ArrayList<>();
-        commands.add(startCommand);
-        commands.add(stopCommand);
-        commands.add(statsCommand);
-        commands.add(new HelpCommand());
-        return commands;
     }
     
     private void setMyCommands(List<IBotCommand> commands) throws TelegramApiException {
